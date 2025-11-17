@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../page/AuthProvider/AuthProvider';
 import { Link } from 'react-router';
 
@@ -6,17 +6,18 @@ import { Link } from 'react-router';
 const Navbar = () => {
 
   const { user, logout } = useContext(AuthContext);
-
+const [open, setOpen] = useState(false);
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md py-4 px-6 flex justify-between items-center">
+    <nav className="bg-white dark:bg-gray-800 shadow-md py-4 px-20 flex flex-wrap  justify-between items-center">
 
       {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-purple-600">
         Artify
       </Link>
-    <div className="ml-6 flex items-center space-x-4  mr-7">
+    <div className="ml-6 flex flex-wrap items-center space-x-4  mr-7">
         <Link className=' hover:text-purple-500' to="/">Home</Link>
-        {user && <Link to="/profile" className='ml-4  hover:text-purple-500'>My Profile</Link>}
+          <Link className=' hover:text-purple-500' to="/artworkpage">ArtworkPage</Link>
+        {user && <Link to="/addartwork" className='ml-4   hover:text-purple-500'>AddArtwork</Link>}
       </div>
 
       <div className="flex items-center space-x-4">
@@ -37,14 +38,19 @@ const Navbar = () => {
             </Link>
           </>
         ) : (
-          <div className="relative group">
+          <div className="relative group ">
             <img
-              src={user.photoURL}
+              src={user.photoURL || ''}
+                onClick={() => setOpen(!open)}
+              // https://via.placeholder.com/150
               alt={user.displayName}
-              className="w-10 h-10 rounded-full cursor-pointer"
+
+              className="w-15 h-15 rounded-full cursor-pointer md:mt-7"
             />
 
-            <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 shadow-lg rounded opacity-0 group-hover:opacity-100 transition-all p-2 z-10">
+            <div     className={`absolute md:right-0 mt-2 w-40 bg-white dark:bg-gray-700 shadow-lg rounded p-2 z-10 transition-all
+          ${open ? "opacity-100 visible" : "opacity-0 invisible"}
+        `}>
               <p className="text-sm font-medium">{user.displayName}</p>
 
               <button
