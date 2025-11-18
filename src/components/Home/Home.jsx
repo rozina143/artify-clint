@@ -5,7 +5,8 @@ const Home = () => {
  const data = useLoaderData(); 
   console.log(data);
 
-  const [featured, setFeatured] = useState([]);
+const [featured, setFeatured] = useState([]);
+
   const [topArtists, setTopArtists] = useState([]);
   const [highlights, setHighlights] = useState([]);
 
@@ -33,31 +34,47 @@ const Home = () => {
           <div className="carousel w-[360px] md:w-[700px] lg:w-[700px]">
 
             <div id="slide1" className="carousel-item relative w-full">
-              <img
-                src="https://picsum.photos/400?60"
-                className="w-full h-[360px] object-cover"
-              />
-            </div>
+{featured[0] && (
+  <img
+    src={featured[0].image}
+    alt={featured[0].title}
+    className="w-full h-[360px] object-cover"
+  />
+)}
+
+            </div>  
 
             <div id="slide2" className="carousel-item relative w-full">
-              <img
-                src="https://picsum.photos/400?59"
-                className="w-full h-[360px] object-cover"
-              />
+              {featured[0] && (
+  <img
+    src={featured[0].image}
+    alt={featured[0].title}
+    className="w-full h-[360px] object-cover"
+  />
+)}
+
             </div>
 
             <div id="slide3" className="carousel-item relative w-full">
-              <img
-                src="https://picsum.photos/400?58"
-                className="w-full h-[360px] object-cover"
-              />
+             {featured[0] && (
+  <img
+    src={featured[0].image}
+    alt={featured[0].title}
+    className="w-full h-[360px] object-cover"
+  />
+)}
+
             </div>
 
             <div id="slide4" className="carousel-item relative w-full">
-              <img
-                src="https://picsum.photos/400?57"
-                className="w-full h-[360px] object-cover"
-              />
+           {featured[0] && (
+  <img
+    src={featured[0].image}
+    alt={featured[0].title}
+    className="w-full h-[360px] object-cover"
+  />
+)}
+
             </div>
 
           </div>
@@ -83,12 +100,12 @@ const Home = () => {
           <p>No featured artworks found</p>
         ) : (
           featured.map((art) => (
-            <div key={art._id} className="shadow p-3">
+            <div key={art.id} className="shadow p-3">
               <img className="w-full h-48 object-cover" src={art.image} />
               <h2>{art.title}</h2>
               <p>{art.artist}</p>
               <p>{art.category}</p>
-              <Link to={`/details/${art._id}`}>
+              <Link to={`/artwork/${art._id}`}>
             <button className="mt-3 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
               View Details
             </button>

@@ -7,6 +7,7 @@ import PrivateRoute from "./PrivateRout";
 import AddArtwork from "../components/AddArtwork/AddArtwork";
 import Errorpage from "../Errorpage/Errorpage";
 import ArtworkPage from "../components/ArtworkPage/ArtworkPage";
+import ArtworkDetails from "../components/ArtworkDetails/ArtworkDetails";
  "../components/Login/Login";
 
 export const router =createBrowserRouter([ {
@@ -34,8 +35,8 @@ export const router =createBrowserRouter([ {
     path:"/addartwork",
     element:<PrivateRoute><AddArtwork></AddArtwork></PrivateRoute>,
   },
-  {
-  path: "/details/:id",
+ {
+  path: "/artwork/:id",
   element: (
     <PrivateRoute>
       <ArtworkDetails />

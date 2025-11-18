@@ -26,7 +26,7 @@ const ArtworkPage = () => {
       </div>
          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {artify.map((art) => (
-          <div key={art.id} className="shadow-lg p-3 rounded bg-white dark:bg-gray-800">
+          <div key={art._id} className="shadow-lg p-3 rounded bg-white dark:bg-gray-800">
 
             <img
               src={art.image}
@@ -41,7 +41,7 @@ const ArtworkPage = () => {
             <p className="text-sm">Category: {art.category}</p>
             <p className="text-sm">❤️ {art.likes} likes</p>
 
-            <Link to={`/artwork/${art.id}`}>
+            <Link to={`/artwork/${art._id}`}>
               <button
                 className="mt-2 w-full bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
               >

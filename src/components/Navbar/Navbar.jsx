@@ -1,12 +1,16 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../page/AuthProvider/AuthProvider';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 
 const Navbar = () => {
 
   const { user, logout } = useContext(AuthContext);
 const [open, setOpen] = useState(false);
+
+  const location = useLocation();
+
+  const isDetailsPage = location.pathname.startsWith("/artwork/");
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md py-4 px-20 flex flex-wrap  justify-between items-center">
 
@@ -18,6 +22,11 @@ const [open, setOpen] = useState(false);
         <Link className=' hover:text-purple-500' to="/">Home</Link>
           <Link className=' hover:text-purple-500' to="/artworkpage">ArtworkPage</Link>
         {user && <Link to="/addartwork" className='ml-4   hover:text-purple-500'>AddArtwork</Link>}
+        {isDetailsPage && (
+        <span className="text-blue-500 font-semibold">
+           Artwork Details
+        </span>
+      )}
       </div>
 
       <div className="flex items-center space-x-4">
