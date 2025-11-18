@@ -22,11 +22,13 @@ const [open, setOpen] = useState(false);
         <Link className=' hover:text-purple-500' to="/">Home</Link>
           <Link className=' hover:text-purple-500' to="/artworkpage">ArtworkPage</Link>
         {user && <Link to="/addartwork" className='ml-4   hover:text-purple-500'>AddArtwork</Link>}
+       
         {isDetailsPage && (
         <span className="text-blue-500 font-semibold">
            Artwork Details
         </span>
       )}
+         {user &&  <Link className=' hover:text-purple-500' to="/favorites">MyFavouritesPage</Link>}
       </div>
 
       <div className="flex items-center space-x-4">

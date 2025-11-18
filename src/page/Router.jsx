@@ -8,6 +8,7 @@ import AddArtwork from "../components/AddArtwork/AddArtwork";
 import Errorpage from "../Errorpage/Errorpage";
 import ArtworkPage from "../components/ArtworkPage/ArtworkPage";
 import ArtworkDetails from "../components/ArtworkDetails/ArtworkDetails";
+import MyFavoritesPage from "../components/MyFavoritesPage/MyFavoritesPage";
  "../components/Login/Login";
 
 export const router =createBrowserRouter([ {
@@ -44,6 +45,15 @@ export const router =createBrowserRouter([ {
   ),
   loader: ({ params }) =>
     fetch(`http://localhost:3000/artwork/${params.id}`)
+},
+{
+  path: "/favorites",
+  element: (
+    <PrivateRoute>
+    <MyFavoritesPage></MyFavoritesPage>
+    </PrivateRoute>
+  ),
+  loader: () => fetch("http://localhost:3000/favorites/user/user1")
 },
   {
     path:"*",
