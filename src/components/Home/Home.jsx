@@ -10,7 +10,7 @@ const [featured, setFeatured] = useState([]);
   const [topArtists, setTopArtists] = useState([]);
   const [highlights, setHighlights] = useState([]);
 
-  // Load data into state
+  
   useEffect(() => {
     if (!data) return;
 

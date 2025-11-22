@@ -28,7 +28,7 @@ const Navbar = () => {
   const isDetailsPage = location.pathname.startsWith("/artwork/");
   return (
     <nav className="bg-base-200 text-base-content  shadow-md py-4 px-20 flex flex-wrap  justify-between items-center">
-{/* bg-white dark:bg-gray-800 */}
+
       {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-purple-600">
         Artify

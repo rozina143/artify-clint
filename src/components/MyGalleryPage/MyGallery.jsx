@@ -5,11 +5,10 @@ const MyGallery = () => {
 
        const [artworks, setArtworks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [updateArtwork, setUpdateArtwork] = useState(null); // for modal
+  const [updateArtwork, setUpdateArtwork] = useState(null); 
+  const userId = "user1"; 
 
-  const userId = "user1"; // replace with logged-in user's ID/email
 
-  // Fetch user's artworks
   const fetchArtworks = async () => {
     try {
       setLoading(true);

@@ -5,8 +5,8 @@ const MyFavoritesPage = () => {
        const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Must match the userId used when adding favorites
-  const userId = "user1"; // Replace with your actual user ID or email
+ 
+  const userId = "user1"; 
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -36,7 +36,7 @@ const MyFavoritesPage = () => {
       if (!res.ok) throw new Error("Failed to remove favorite");
 
       Swal.fire("Removed!", "Artwork removed from favorites.", "success");
-      // Update favorites state
+    
       setFavorites((prev) => prev.filter((art) => art._id !== artworkId));
     } catch (err) {
       console.error(err);

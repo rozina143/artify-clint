@@ -18,12 +18,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ⛔ ভুল: login() return value নিচ্ছিলে না
-    // ⛔ logedUser undefined ছিল
-
+  
     const loggedUser = await login(email, password);
 
-    // ✅ এখন email ঠিকভাবে save হবে
     localStorage.setItem("user", JSON.stringify({
       email: loggedUser.user.email
     }));

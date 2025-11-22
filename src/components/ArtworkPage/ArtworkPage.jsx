@@ -6,7 +6,7 @@ const ArtworkPage = () => {
   const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
 
-  // Fetch artworks
+  
   const fetchArtworks = async () => {
     const res = await fetch("http://localhost:3000/artify");
     const data = await res.json();
@@ -69,7 +69,7 @@ const ArtworkPage = () => {
             <p className="text-sm text-gray-500">Artist: {art.artist}</p>
             <p className="text-sm text-gray-600">Category: {art.category}</p>
 
-            <p className="text-sm mt-2">❤️ {art.likes} likes</p>
+            <p className="text-sm mt-2"> {art.likes} likes</p>
 
             <Link to={`/artwork/${art._id}`}>
               <button className="btn mt-3 w-full bg-blue-500 text-white py-2 rounded">

@@ -9,7 +9,7 @@ const artwork = useLoaderData();
   const [likeCount, setLikeCount] = useState(likes);
   const [favoriteAdded, setFavoriteAdded] = useState(false);
 
-  // Handle Like
+  //  Like
   const handleLike = async () => {
     try {
       const res = await fetch(`http://localhost:3000/artwork/${_id}/like`, {
@@ -21,7 +21,7 @@ const artwork = useLoaderData();
     }
   };
 
-  // Handle Add to Favorites (no user check)
+  //  Add to Favorite
   const handleAddToFavorites = async () => {
     try {
       const res = await fetch("http://localhost:3000/favorites", {
@@ -29,7 +29,7 @@ const artwork = useLoaderData();
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           artworkId: _id,
-          userId: "user1" // hardcoded user ID
+          userId: "user1" 
         }),
       });
 

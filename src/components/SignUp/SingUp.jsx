@@ -18,10 +18,10 @@ const SingUp = () => {
     const email = form.email.value;
     const password = form.password.value;
 
-    // Create user with Firebase
+   
     const result = await createUser(email, password);
 
-    // ⭐ Save user info
+
     localStorage.setItem(
       "user",
       JSON.stringify({
@@ -30,7 +30,7 @@ const SingUp = () => {
       })
     );
 
-    // Redirect to homepage
+
     navigate("/");
   };
 
