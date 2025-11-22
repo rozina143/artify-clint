@@ -1,58 +1,80 @@
-import React, { useState } from 'react';
-import { Link, useLoaderData } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 const MyFavoritesPage = () => {
+       const [favorites, setFavorites] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-      const data = useLoaderData();
-  const [favorites, setFavorites] = useState(data);
+  // Must match the userId used when adding favorites
+  const userId = "user1"; // Replace with your actual user ID or email
 
-  const handleUnfavorite = async (id) => {
-    const res = await fetch(
-      `http://localhost:3000/favorites/${id}/user1`,
-      { method: "DELETE" }
-    );
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:3000/favorites/${userId}`);
+        if (!res.ok) throw new Error("Failed to fetch favorites");
+        const data = await res.json();
+        setFavorites(data);
+      } catch (err) {
+        console.error(err);
+        Swal.fire("Error", "Failed to load favorites.", "error");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (res.ok) {
-      setFavorites(prev => prev.filter(item => item._id !== id));
+    fetchFavorites();
+  }, [userId]);
+
+  const handleUnfavorite = async (artworkId) => {
+    try {
+      const res = await fetch(`http://localhost:3000/favorites/${userId}/${artworkId}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to remove favorite");
+
+      Swal.fire("Removed!", "Artwork removed from favorites.", "success");
+      // Update favorites state
+      setFavorites((prev) => prev.filter((art) => art._id !== artworkId));
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to remove favorite.", "error");
     }
   };
 
+
     return (
         <div>
-            <div className="p-6">
-      <h1 className="text-3xl font-bold mb-5">❤️ My Favorite Artworks</h1>
+             <h2 className="text-2xl mb-4 text-center mt-7">My Favorites</h2>
 
-      {favorites.length === 0 && (
-        <p className="text-gray-600">No favorites yet.</p>
-      )}
+    <div className="p-6 mt-6 gap-5 grid md:grid-cols-4 justify-center">
+     
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-        {favorites.map((art) => (
-          <div key={art._id} className="shadow p-3 bg-white rounded">
+      {loading && <p>Loading...</p>}
+      {!loading && favorites.length === 0 && <p>No favorites yet.</p>}
 
-            <img src={art.image} className="w-full h-48 object-cover rounded" />
-
-            <h2 className="text-lg text-stone-900 font-bold mt-2">{art.title}</h2>
-            <p className="text-sm text-gray-600">Artist: {art.artist}</p>
-
-            <Link to={`/artwork/${art._id}`}>
-              <button className="w-full mt-2 bg-blue-600 text-white py-1 rounded">
-                View Details
-              </button>
-            </Link>
-
-            <button
+      {favorites.map((art) => (
+        <div key={art._id} className="border p-4 mb-3">
+          <img
+            src={art.image}
+            alt={art.title}
+            className="w-48 h-48 object-cover mb-2"
+          />
+          <h3>{art.title}</h3>
+          <p>{art.category}</p>
+           <button
+              className="mt-2 px-3 py-1 bg-blue-300 text-white rounded"
               onClick={() => handleUnfavorite(art._id)}
-              className="w-full mt-2 bg-red-500 text-white py-1 rounded"
             >
-               Remove Favorite
+              Remove 
             </button>
-
-          </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
         </div>
+         
     );
 };
 

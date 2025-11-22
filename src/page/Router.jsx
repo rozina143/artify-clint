@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, redirect } from "react-router";
 import Mainlayout from "./Mainlayout";
 import Home from "../components/Home/Home";
 import Login from "../components/Login/Login";
@@ -9,7 +9,8 @@ import Errorpage from "../Errorpage/Errorpage";
 import ArtworkPage from "../components/ArtworkPage/ArtworkPage";
 import ArtworkDetails from "../components/ArtworkDetails/ArtworkDetails";
 import MyFavoritesPage from "../components/MyFavoritesPage/MyFavoritesPage";
- "../components/Login/Login";
+import MyGallery from "../components/MyGalleryPage/MyGallery";
+
 
 export const router =createBrowserRouter([ {
     path: "/",
@@ -17,12 +18,13 @@ export const router =createBrowserRouter([ {
     children: [
       { index: true, 
       Component: Home ,
-       loader: () => fetch("http://localhost:3000/homepage")
+       loader: () =>  fetch("http://localhost:3000/homepage").then(res => res.json())
     },
-      { index: true, 
+     {
         path:"/artworkpage",
       Component: ArtworkPage ,
-      loader:()=>fetch('http://localhost:3000/artify')
+      loader:()=> fetch('http://localhost:3000/artify')
+    .then(res => res.json())
     },
     { 
         path: "/login", 
@@ -44,8 +46,10 @@ export const router =createBrowserRouter([ {
     </PrivateRoute>
   ),
   loader: ({ params }) =>
-    fetch(`http://localhost:3000/artwork/${params.id}`)
+     fetch(`http://localhost:3000/artwork/${params.id}`)
+            .then(res => res.json())
 },
+
 {
   path: "/favorites",
   element: (
@@ -53,8 +57,17 @@ export const router =createBrowserRouter([ {
     <MyFavoritesPage></MyFavoritesPage>
     </PrivateRoute>
   ),
-  loader: () => fetch("http://localhost:3000/favorites/user/user1")
+
 },
+{
+  path: "mygallery",
+        element: (
+          <PrivateRoute>
+            <MyGallery />
+          </PrivateRoute>
+        )
+      },
+
   {
     path:"*",
     element:<Errorpage></Errorpage>,

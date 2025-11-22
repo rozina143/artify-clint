@@ -1,59 +1,91 @@
-import React, { useState } from 'react';
-import { Link, useLoaderData } from 'react-router';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 
 const ArtworkPage = () => {
-    const data = useLoaderData();
-    console.log(data);
-      const [artworks, setArtworks] = useState(data);
+    const [artworks, setArtworks] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [search, setSearch] = useState("");
-  
-      const artify = artworks.filter((art) =>
-    art.title.toLowerCase().includes(search.toLowerCase()) ||
-    art.artist.toLowerCase().includes(search.toLowerCase())
-  );
-    return (
-         <div className="p-6">
 
-      {/* Search Input */}
-      <div className="mb-5">
-        <input
-          type="text"
-          placeholder="Search by title or artist..."
-          className="w-full md:w-96 p-2 border rounded"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
-         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-        {artify.map((art) => (
-          <div key={art._id} className="shadow-lg p-3 rounded bg-white dark:bg-gray-800">
+  // Fetch artworks
+  const fetchArtworks = async () => {
+    const res = await fetch("http://localhost:3000/artify");
+    const data = await res.json();
 
+    // Only show public artworks
+    const publicArtworks = data.filter(
+      (item) => item.visibility !== "Private"
+    );
+
+    setArtworks(publicArtworks);
+    setFiltered(publicArtworks)
+  };
+
+  useEffect(() => {
+    fetchArtworks();
+  }, []);
+
+  // Search handler
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearch(value);
+
+    const result = artworks.filter(
+      (item) =>
+        item.title.toLowerCase().includes(value) ||
+        item.artist.toLowerCase().includes(value)
+    );
+
+    setFiltered(result);
+  };
+
+  return (
+    <div>
+        <div className="p-6">
+      <h2 className="text-3xl mb-4 text-center">Explore Artworks</h2>
+
+      {/* Search Bar */}
+      <input
+        type="text"
+        placeholder="Search by Title or Artist..."
+        value={search}
+        onChange={handleSearch}
+        className="border p-2 w-full max-w-md mx-auto block mb-6"
+      />
+
+      {/* Artworks Grid */}
+      <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filtered.map((art) => (
+          <div
+            key={art._id}
+            className="border rounded shadow p-3 hover:shadow-lg transition"
+          >
             <img
               src={art.image}
               alt={art.title}
-              className="w-full h-48 object-cover rounded"
+              className="w-full h-48 object-cover rounded mb-3"
             />
 
-            <h2 className="text-lg font-bold mt-2">{art.title}</h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Artist: {art.artist}
-            </p>
-            <p className="text-sm">Category: {art.category}</p>
-            <p className="text-sm">❤️ {art.likes} likes</p>
+            <h3 className="text-lg font-bold">{art.title}</h3>
+            <p className="text-sm text-gray-500">Artist: {art.artist}</p>
+            <p className="text-sm text-gray-600">Category: {art.category}</p>
+
+            <p className="text-sm mt-2">❤️ {art.likes} likes</p>
 
             <Link to={`/artwork/${art._id}`}>
-              <button
-                className="mt-2 w-full bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-              >
+              <button className="btn mt-3 w-full bg-blue-500 text-white py-2 rounded">
                 View Details
               </button>
             </Link>
-
           </div>
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <p className="text-center text-gray-500 mt-5">No artworks found.</p>
+      )}
     </div>
-    );
+    </div>
+  );
 };
 
 export default ArtworkPage;

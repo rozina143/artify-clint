@@ -6,12 +6,16 @@ import { ToastContainer } from 'react-toastify';
 
 const Mainlayout = () => {
     return (
-         <div className='max-w-6xl mx-auto'>
+        
+         <div className='max-w-6xl mx-auto  bg-base-100 text-base-content transition-colors duration-300'>
             <Navbar></Navbar>
             <Outlet></Outlet>
             <Footer></Footer>
-             <ToastContainer position="top-right" autoClose={3000} />                
+             <ToastContainer position="top-right" autoClose={3000} />
         </div>
+
+          
+        
     );
 };
 

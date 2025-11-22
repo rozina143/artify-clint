@@ -1,23 +1,44 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../page/AuthProvider/AuthProvider';
 import { Link, useLocation } from 'react-router';
 
 
 const Navbar = () => {
+   const { user, logout } = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [theme, setTheme] = useState("light"); 
+  // Apply theme 
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme") || "light";
+    setTheme(storedTheme);
+    document.documentElement.setAttribute("data-theme", storedTheme);
+  }, []);
 
-  const { user, logout } = useContext(AuthContext);
-const [open, setOpen] = useState(false);
+  // Toggle theme
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+  };
+
 
   const location = useLocation();
 
   const isDetailsPage = location.pathname.startsWith("/artwork/");
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-md py-4 px-20 flex flex-wrap  justify-between items-center">
-
+    <nav className="bg-base-200 text-base-content  shadow-md py-4 px-20 flex flex-wrap  justify-between items-center">
+{/* bg-white dark:bg-gray-800 */}
       {/* Logo */}
       <Link to="/" className="text-2xl font-bold text-purple-600">
         Artify
       </Link>
+  <div>
+              <button className="btn btn-outline btn-sm" onClick={toggleTheme}>
+          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
+        </button>
+        </div>
+
     <div className="ml-6 flex flex-wrap items-center space-x-4  mr-7">
         <Link className=' hover:text-purple-500' to="/">Home</Link>
           <Link className=' hover:text-purple-500' to="/artworkpage">ArtworkPage</Link>
@@ -29,9 +50,15 @@ const [open, setOpen] = useState(false);
         </span>
       )}
          {user &&  <Link className=' hover:text-purple-500' to="/favorites">MyFavouritesPage</Link>}
+            {user &&  <Link className=' hover:text-purple-500' to="/mygallery">MyGallery</Link>}
       </div>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-wrap justify-center items-center space-x-4">
+
+
+      
+
+
         {!user ? (
           <>
             <Link
@@ -51,12 +78,12 @@ const [open, setOpen] = useState(false);
         ) : (
           <div className="relative group ">
             <img
-              src={user.photoURL || ''}
+              src={user.photoURL || "https://via.placeholder.com/150"}
                 onClick={() => setOpen(!open)}
               // https://via.placeholder.com/150
               alt={user.displayName}
 
-              className="w-15 h-15 rounded-full cursor-pointer md:mt-7"
+              className="w-15 h-15 rounded-full cursor-pointer "
             />
 
             <div     className={`absolute md:right-0 mt-2 w-40 bg-white dark:bg-gray-700 shadow-lg rounded p-2 z-10 transition-all
